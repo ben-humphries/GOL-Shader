@@ -41,6 +41,8 @@ int main()
 
 		window.clear();
 
+		fragmentShader.setUniform("aTexture", sf::Shader::CurrentTexture);
+
 		window.draw(sprite, &fragmentShader);
 		
 		window.display();
