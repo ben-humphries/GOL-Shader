@@ -2,7 +2,9 @@
 
 #include <random>
 
-const int WINDOW_SIZE = 400;
+const int WINDOW_SIZE = 1000;
+
+const int GAME_SIZE = 500;
 
 int main()
 {
@@ -10,11 +12,17 @@ int main()
 
 	sf::RenderWindow window(sf::VideoMode(WINDOW_SIZE, WINDOW_SIZE), "GOL");
 
-	sf::Image image;
-	image.create(WINDOW_SIZE, WINDOW_SIZE, sf::Color());
+	sf::RenderTexture rtexture;
+	if (!rtexture.create(GAME_SIZE, GAME_SIZE)) {
+		printf("Could not create render texture.");
+	}
 
-	for (int i = 0; i < WINDOW_SIZE; i++) 
-		for (int j = 0; j < WINDOW_SIZE; j++) {
+
+	sf::Image image;
+	image.create(GAME_SIZE, GAME_SIZE, sf::Color());
+
+	for (int i = 0; i < GAME_SIZE; i++) 
+		for (int j = 0; j < GAME_SIZE; j++) {
 			if (rand() % 2 == 0) {
 				image.setPixel(i, j, sf::Color::White);
 			}
@@ -45,13 +53,20 @@ int main()
 		if (clock.getElapsedTime().asSeconds() > 0) {
 			clock.restart();
 
-			window.clear();
+			rtexture.clear();
 
 			fragmentShader.setUniform("aTexture", sf::Shader::CurrentTexture);
-			fragmentShader.setUniform("windowSize", (float) WINDOW_SIZE);
-			window.draw(sprite, &fragmentShader);
-			texture.update(window);
+			fragmentShader.setUniform("windowSize", (float) GAME_SIZE);
+			rtexture.draw(sprite, &fragmentShader);
+			texture.update(rtexture.getTexture());
 
+			rtexture.display();
+
+			window.clear();
+			sf::Sprite fsprite(rtexture.getTexture());
+			float scale = (float)WINDOW_SIZE / (float)GAME_SIZE;
+			fsprite.setScale(scale, scale);
+			window.draw(fsprite);
 			window.display();
 
 		}
