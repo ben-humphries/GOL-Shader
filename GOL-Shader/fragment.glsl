@@ -24,7 +24,7 @@ void main()
 
 	if(texture2D(aTexture, vec2(gl_TexCoord[0].x, gl_TexCoord[0].y)).r == 1.0){ //currently alive
 		if(neighbors < 2.0 || neighbors > 3.0){ //dies
-			gl_FragColor = vec4(0.0,0.0,0.0,1.0);
+			gl_FragColor = vec4(0.0,0.172,0.172,1.0);
 		}
 		else{ //lives
 			gl_FragColor = vec4(1.0,1.0,1.0,1.0);
@@ -34,7 +34,7 @@ void main()
 			gl_FragColor = vec4(1.0,1.0,1.0,1.0);
 		}
 		else{
-			gl_FragColor = vec4(0.0,0.0,0.0,1.0);
+			gl_FragColor = vec4(0.0,0.172,0.172,1.0);
 		}
 	}
 } 

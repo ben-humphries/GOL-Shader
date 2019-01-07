@@ -6,6 +6,8 @@ const int WINDOW_SIZE = 1000;
 
 const int GAME_SIZE = 500;
 
+const float MAX_FPS = 120;
+
 int main()
 {
 	srand(time(NULL));
@@ -50,7 +52,7 @@ int main()
 				window.close();
 		}
 
-		if (clock.getElapsedTime().asSeconds() > 0) {
+		if (clock.getElapsedTime().asSeconds() > 1 / MAX_FPS) {
 			clock.restart();
 
 			rtexture.clear();
