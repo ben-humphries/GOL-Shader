@@ -2,17 +2,19 @@
 
 #include <random>
 
-const int WINDOW_WIDTH = 1000, WINDOW_HEIGHT = 1000;
+const int WINDOW_SIZE = 400;
 
 int main()
 {
-	sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "GOL");
+	srand(time(NULL));
+
+	sf::RenderWindow window(sf::VideoMode(WINDOW_SIZE, WINDOW_SIZE), "GOL");
 
 	sf::Image image;
-	image.create(WINDOW_WIDTH, WINDOW_HEIGHT, sf::Color());
+	image.create(WINDOW_SIZE, WINDOW_SIZE, sf::Color());
 
-	for (int i = 0; i < WINDOW_WIDTH; i++) 
-		for (int j = 0; j < WINDOW_HEIGHT; j++) {
+	for (int i = 0; i < WINDOW_SIZE; i++) 
+		for (int j = 0; j < WINDOW_SIZE; j++) {
 			if (rand() % 2 == 0) {
 				image.setPixel(i, j, sf::Color::White);
 			}
@@ -29,6 +31,7 @@ int main()
 		printf("Could not load shader.");
 	}
 
+	sf::Clock clock;
 
 	while (window.isOpen())
 	{
@@ -39,13 +42,19 @@ int main()
 				window.close();
 		}
 
-		window.clear();
+		if (clock.getElapsedTime().asSeconds() > 0) {
+			clock.restart();
 
-		fragmentShader.setUniform("aTexture", sf::Shader::CurrentTexture);
+			window.clear();
 
-		window.draw(sprite, &fragmentShader);
-		
-		window.display();
+			fragmentShader.setUniform("aTexture", sf::Shader::CurrentTexture);
+			fragmentShader.setUniform("windowSize", (float) WINDOW_SIZE);
+			window.draw(sprite, &fragmentShader);
+			texture.update(window);
+
+			window.display();
+
+		}
 	}
 
 	return 0;
