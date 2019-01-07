@@ -1,10 +1,27 @@
 #include <SFML/Graphics.hpp>
 
+#include <random>
+
+const int WINDOW_WIDTH = 1000, WINDOW_HEIGHT = 1000;
+
 int main()
 {
-	sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
-	sf::CircleShape shape(100.f);
-	shape.setFillColor(sf::Color::Green);
+	sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "GOL");
+
+	sf::Image image;
+	image.create(WINDOW_WIDTH, WINDOW_HEIGHT, sf::Color());
+
+	for (int i = 0; i < WINDOW_WIDTH; i++) 
+		for (int j = 0; j < WINDOW_HEIGHT; j++) {
+			if (rand() % 2 == 0) {
+				image.setPixel(i, j, sf::Color::White);
+			}
+		}
+
+	sf::Texture texture;
+	texture.loadFromImage(image);
+	sf::Sprite sprite;
+	sprite.setTexture(texture);
 
 	while (window.isOpen())
 	{
@@ -16,7 +33,9 @@ int main()
 		}
 
 		window.clear();
-		window.draw(shape);
+
+		window.draw(sprite);
+		
 		window.display();
 	}
 
