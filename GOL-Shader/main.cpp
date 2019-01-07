@@ -23,6 +23,13 @@ int main()
 	sf::Sprite sprite;
 	sprite.setTexture(texture);
 
+	sf::Shader fragmentShader;
+
+	if (!fragmentShader.loadFromFile("fragment.glsl", sf::Shader::Fragment)) {
+		printf("Could not load shader.");
+	}
+
+
 	while (window.isOpen())
 	{
 		sf::Event event;
@@ -34,7 +41,7 @@ int main()
 
 		window.clear();
 
-		window.draw(sprite);
+		window.draw(sprite, &fragmentShader);
 		
 		window.display();
 	}
